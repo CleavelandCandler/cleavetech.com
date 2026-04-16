@@ -1,0 +1,39 @@
+/* ============================================================
+   tokens.css — Design tokens for cleavetech.com
+   All colors, typography, and spacing in one place.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap');
+
+:root {
+
+  /* --- Colors --- */
+  --color-bg:          #ffffff;
+  --color-text:        #1a1a1a;
+  --color-text-muted:  #888888;
+  --color-border:      #d0d0d0;
+  --color-surface:     #f8f8f8;
+  --color-accent:      #0d7377;
+
+  /* --- Typography --- */
+  --font-primary: 'Montserrat', sans-serif;
+
+  --font-size-xs:   0.625rem;   /* 10px */
+  --font-size-sm:   0.6875rem;  /* 11px */
+  --font-size-base: 0.8125rem;  /* 13px */
+  --font-size-md:   1rem;       /* 16px */
+
+  --font-weight-light:    300;
+  --font-weight-regular:  400;
+  --font-weight-medium:   500;
+  --font-weight-semibold: 600;
+
+  --letter-spacing-wide:   0.14em;
+  --letter-spacing-wider:  0.18em;
+
+  /* --- Transitions --- */
+  --transition-fast:   0.2s ease;
+  --transition-base:   0.25s ease;
+  --transition-slow:   0.38s ease;
+
+}

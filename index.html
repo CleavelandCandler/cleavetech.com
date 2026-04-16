@@ -3,23 +3,33 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cleaveland Candler</title>
+    <title>CleaveTech</title>
     <link rel="stylesheet" href="src/styles/tokens.css" />
     <link rel="stylesheet" href="src/styles/main.css" />
   </head>
   <body>
 
-    <!-- LANDING -->
     <main class="landing">
-      <h1><a href="about/">Cleaveland Candler</a></h1>
-      <nav class="identity-nav">
-        <a href="technology/">Technologist</a>
-        <span>·</span>
-        <a href="design/">Designer</a>
-        <span>·</span>
-        <a href="music/">Musician</a>
-      </nav>
+
+      <p class="landing__title">CleaveTech</p>
+
+      <svg
+        class="portfolio-svg"
+        viewBox="0 0 640 480"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-label="Interactive portfolio — select a discipline to explore projects"
+      >
+        <!-- Layer 1: connecting lines and project icons (rendered behind buttons) -->
+        <g id="js-lines"></g>
+        <g id="js-icons"></g>
+
+        <!-- Layer 2: discipline buttons (rendered on top) -->
+        <g id="js-disciplines"></g>
+      </svg>
+
     </main>
+
+    <script src="src/js/main.js"></script>
 
   </body>
 </html>
