@@ -9,25 +9,28 @@
   </head>
   <body>
 
-    <main class="landing">
+<main class="landing">
 
-      <p class="landing__title">CleaveTech</p>
+  <header class="landing__header">
+    <p class="landing__title">CleaveTech</p>
+    <nav class="landing__nav">
+      <a href="about/" class="landing__nav-link">About</a>
+      <a href="contact/" class="landing__nav-link">Contact</a>
+    </nav>
+  </header>
 
-      <svg
-        class="portfolio-svg"
-        viewBox="0 0 640 480"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-label="Interactive portfolio — select a discipline to explore projects"
-      >
-        <!-- Layer 1: connecting lines and project icons (rendered behind buttons) -->
-        <g id="js-lines"></g>
-        <g id="js-icons"></g>
+  <svg
+    class="portfolio-svg"
+    viewBox="0 0 640 480"
+    xmlns="http://www.w3.org/2000/svg"
+    aria-label="Interactive portfolio — select a discipline to explore projects"
+  >
+    <g id="js-lines"></g>
+    <g id="js-icons"></g>
+    <g id="js-disciplines"></g>
+  </svg>
 
-        <!-- Layer 2: discipline buttons (rendered on top) -->
-        <g id="js-disciplines"></g>
-      </svg>
-
-    </main>
+</main>
 
     <script src="src/js/main.js"></script>
 
