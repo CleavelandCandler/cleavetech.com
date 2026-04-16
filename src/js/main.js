@@ -12,7 +12,7 @@
   const CONFIG = {
     // SVG canvas center
     cx: 320,
-    cy: 258,
+    cy: 240,
 
     // Triangle: radius from center to each discipline button
     triangleRadius: 168,

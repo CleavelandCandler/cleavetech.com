@@ -14,6 +14,10 @@
 }
 
 body {
+  overflow: hidden;
+}
+
+body {
   background-color: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-primary);
@@ -41,7 +45,7 @@ body {
   letter-spacing: var(--letter-spacing-wider);
   text-transform: none;
   color: var(--color-text);
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; /* gap between title & buttons */
   user-select: none;
 }
 
@@ -56,16 +60,16 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 0;
-  margin-bottom: 0rem;
+  margin-bottom: 0rem; /* gap between header and page content */
   border: 1px solid var(--color-border);
-  padding: 1rem 1.5rem;
+  padding: 1.5rem 2rem; /* gap around inside of border */
   width: fit-content;
   margin-inline: auto;
 }
 
 .landing__nav {
   display: flex;
-  gap: 2.5rem;
+  gap: 2.5rem; /* gap between buttons */
 }
 
 .landing__nav-link {
@@ -91,8 +95,8 @@ body {
 
 .portfolio-svg {
   width: 100%;
-  max-width: 1280px;
-  height: 720px;
+  max-width: min(1280px, calc((100svh - 120px) * 640 / 480));
+  height: auto;
   overflow: visible;
 }
 
