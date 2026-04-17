@@ -18,16 +18,10 @@
     triangleRadius: 168,
 
     // Discipline button radius
-    discRadius: 44,
+    discRadius: 50,
 
     // Project icon radius
     projRadius: 28,
-
-    // Arc: distance from discipline button to side project icons
-    arcRadiusSide: 108,
-
-    // Arc: distance from discipline button to center project icon
-    arcRadiusCenter: 145,
 
     // Degrees between each project icon in the arc
     arcSpread: 30,
@@ -37,6 +31,12 @@
 
     // Delay between each icon animating in (stagger), in ms
     animStagger: 60,
+
+    // How far the inner background lines extend in both directions
+    bgExtendInner: 320,
+
+    // How far the outer rays extend (past any viewport)
+    bgExtendOuter: 2000,
   };
 
   /* ----------------------------------------------------------
@@ -44,15 +44,33 @@
   ---------------------------------------------------------- */
 
   const DISCIPLINES = [
-    { id: 'technology', label: 'Technology', angle: -90 },
-    { id: 'design',     label: 'Design',     angle: 150 },
-    { id: 'music',      label: 'Music',      angle: 30  },
+    {
+      id: 'technology',
+      label: 'Technology',
+      angle: -90,
+      labelArcTop: false,   // labels arc along bottom of tile
+      labelR: CONFIG.projRadius + 12,
+    },
+    {
+      id: 'design',
+      label: 'Design',
+      angle: 150,
+      labelArcTop: true,    // labels arc along top of tile
+      labelR: CONFIG.projRadius + 6,
+    },
+    {
+      id: 'music',
+      label: 'Music',
+      angle: 30,
+      labelArcTop: true,    // labels arc along top of tile
+      labelR: CONFIG.projRadius + 6,
+    },
   ];
 
   const PROJECTS = {
-    technology: ['Maker Portfolio', 'IT Support', 'Homelab'],
-    design:     ['Project Geode',   'Motion Design', 'Projection Mapping'],
-    music:      ['Radio',           'Production',    'DJ'],
+    technology: ['Makerspace',    'IT Support',    'Homelab'       ],
+    design:     ['Project Geode', 'Motion Design', 'Projection Art'],
+    music:      ['Radio',         'Production',    'Disk Jockey'   ],
   };
 
   /* ----------------------------------------------------------
@@ -72,22 +90,86 @@
   }
 
   /**
-   * Returns an array of {label, x, y} for a discipline's project icons,
-   * fanned inward toward the center of the triangle.
+   * Returns the three {origin, dir} lines radiating inward from
+   * a discipline button — one per project icon direction.
    */
-  function projPositions(disc) {
+  function discLines(disc) {
     const dp = discPos(disc);
     const inwardAngle = Math.atan2(CONFIG.cy - dp.y, CONFIG.cx - dp.x) * 180 / Math.PI;
+    return [-1, 0, 1].map(offset => {
+      const a = toRad(inwardAngle + offset * CONFIG.arcSpread);
+      return { origin: dp, dir: { x: Math.cos(a), y: Math.sin(a) } };
+    });
+  }
+
+  /**
+   * Returns the intersection point of two lines,
+   * each defined by a point and a direction vector.
+   * Returns null if lines are parallel.
+   */
+  function intersect(p1, d1, p2, d2) {
+    const denom = d1.x * d2.y - d1.y * d2.x;
+    if (Math.abs(denom) < 1e-10) return null;
+    const dx = p2.x - p1.x;
+    const dy = p2.y - p1.y;
+    const t = (dx * d2.y - dy * d2.x) / denom;
+    return { x: p1.x + t * d1.x, y: p1.y + t * d1.y };
+  }
+
+  // Pre-compute all discipline lines so we can intersect them
+  const ALL_LINES = {};
+  DISCIPLINES.forEach(disc => { ALL_LINES[disc.id] = discLines(disc); });
+
+  /**
+   * Returns an array of {label, x, y} for a discipline's project icons,
+   * snapped to the intersections of the background geometry lines.
+   *
+   * - Center icon (i=1): sits at the convergence of all three center lines
+   * - Side icons (i=0,2): sit at the outer triangle vertices where
+   *   neighboring side lines cross
+   */
+  function projPositions(disc) {
+    const otherDiscs = DISCIPLINES.filter(d => d.id !== disc.id);
+    const myLines = ALL_LINES[disc.id];
 
     return PROJECTS[disc.id].map((label, i) => {
-      const offset = (i - 1) * CONFIG.arcSpread;
-      const r = i === 1 ? CONFIG.arcRadiusCenter : CONFIG.arcRadiusSide;
-      const a = toRad(inwardAngle + offset);
-      return {
-        label,
-        x: dp.x + r * Math.cos(a),
-        y: dp.y + r * Math.sin(a),
-      };
+      let pos;
+
+      if (i === 1) {
+        // Center icon: average of intersections between my center line
+        // and the center lines of the other two disciplines
+        const l1 = myLines[1];
+        const l2 = ALL_LINES[otherDiscs[0].id][1];
+        const l3 = ALL_LINES[otherDiscs[1].id][1];
+        const p1 = intersect(l1.origin, l1.dir, l2.origin, l2.dir);
+        const p2 = intersect(l1.origin, l1.dir, l3.origin, l3.dir);
+        pos = p1 && p2
+          ? { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 }
+          : p1 || p2;
+      } else {
+        // Side icons: find the nearest intersection of my side line
+        // with any line from the other disciplines (in the inward direction)
+        const myLine = myLines[i];
+        let best = null;
+        let bestDist = Infinity;
+
+        otherDiscs.forEach(other => {
+          [0, 1, 2].forEach(j => {
+            const otherLine = ALL_LINES[other.id][j];
+            const p = intersect(myLine.origin, myLine.dir, otherLine.origin, otherLine.dir);
+            if (!p) return;
+            // Must be in the inward direction (positive t from disc origin)
+            const t = (p.x - myLine.origin.x) / myLine.dir.x;
+            if (t < 20) return; // skip intersections too close to the disc button
+            const dist = Math.hypot(p.x - CONFIG.cx, p.y - CONFIG.cy);
+            if (dist < bestDist) { bestDist = dist; best = p; }
+          });
+        });
+
+        pos = best;
+      }
+
+      return { label, x: pos.x, y: pos.y };
     });
   }
 
@@ -104,6 +186,42 @@
   }
 
   /* ----------------------------------------------------------
+     Arc label builder
+     Creates a <path> in <defs> and returns a <text> using it.
+
+     labelArcTop=true  → arc over the top of the tile (Design, Music)
+     labelArcTop=false → arc under the bottom of the tile (Technology)
+     r                 → radius from tile center to text baseline
+  ---------------------------------------------------------- */
+
+  const defs = document.getElementById('js-defs');
+  let pathCounter = 0;
+
+  function makeArcLabel(label, labelArcTop, r) {
+    const id = 'arcpath-' + (pathCounter++);
+
+    // Clockwise sweep (0) = bottom arc; counter-clockwise (1) = top arc
+    const sweep = labelArcTop ? 1 : 0;
+    const d = `M ${-r} 0 A ${r} ${r} 0 0 ${sweep} ${r} 0`;
+
+    const path = svgEl('path', { id, d, fill: 'none' });
+    defs.appendChild(path);
+
+    const txt = document.createElementNS(NS, 'text');
+    txt.setAttribute('class', 'arc-label');
+    txt.style.opacity = '0';
+
+    const tp = document.createElementNS(NS, 'textPath');
+    tp.setAttribute('href', '#' + id);
+    tp.setAttribute('startOffset', '50%');
+    tp.setAttribute('text-anchor', 'middle');
+    tp.textContent = label;
+
+    txt.appendChild(tp);
+    return txt;
+  }
+
+  /* ----------------------------------------------------------
      Animation helpers
   ---------------------------------------------------------- */
 
@@ -111,7 +229,7 @@
   function easeInCubic(t)  { return t * t * t; }
 
   /**
-   * Animates a single project icon wrapper:
+   * Animates a single project icon:
    * - show=true:  slides out from disc center, scales up, fades in
    * - show=false: slides back to disc center, scales down, fades out
    */
@@ -125,17 +243,14 @@
         return;
       }
 
-      const elapsed = now - startTime;
-      const raw     = Math.min(elapsed / CONFIG.animDuration, 1);
-      const t       = show ? easeOutCubic(raw) : easeInCubic(raw);
+      const elapsed  = now - startTime;
+      const raw      = Math.min(elapsed / CONFIG.animDuration, 1);
+      const t        = show ? easeOutCubic(raw) : easeInCubic(raw);
       const progress = show ? t : 1 - t;
 
-      // Move wrapper toward final position from disc center
       const x = discCenter.x + (tx - discCenter.x) * progress;
       const y = discCenter.y + (ty - discCenter.y) * progress;
       wrapper.setAttribute('transform', `translate(${x}, ${y})`);
-
-      // Scale and fade the inner icon
       inner.setAttribute('transform', `scale(${progress})`);
       wrapper.style.opacity = progress;
 
@@ -150,18 +265,63 @@
   }
 
   /* ----------------------------------------------------------
-     Build the SVG
+     Layer references
   ---------------------------------------------------------- */
 
-  const svg       = document.querySelector('.portfolio-svg');
-  const linesLayer = document.getElementById('js-lines');
-  const iconsLayer = document.getElementById('js-icons');
-  const discLayer  = document.getElementById('js-disciplines');
+  const bgRayLayer = document.getElementById('js-bg-rays');
+  const bgLineLayer = document.getElementById('js-bg-lines');
+  const linesLayer  = document.getElementById('js-lines');
+  const iconsLayer  = document.getElementById('js-icons');
+  const discLayer   = document.getElementById('js-disciplines');
 
   let activeDisc = null;
-  const discData = {};
+  const discData      = {};
+  const bgLinesByDisc = {};
+  const bgRaysByDisc  = {};
 
-  // Build project icons and connecting lines for each discipline
+  /* ----------------------------------------------------------
+     Build background geometry
+  ---------------------------------------------------------- */
+
+  DISCIPLINES.forEach(disc => {
+    const dp    = discPos(disc);
+    const lines = ALL_LINES[disc.id];
+    const bgLines = [];
+    const bgRays  = [];
+
+    lines.forEach(line => {
+      // Inner line: extends in BOTH directions, forming the bounded star
+      const ix1 = dp.x - line.dir.x * CONFIG.bgExtendInner;
+      const iy1 = dp.y - line.dir.y * CONFIG.bgExtendInner;
+      const ix2 = dp.x + line.dir.x * CONFIG.bgExtendInner;
+      const iy2 = dp.y + line.dir.y * CONFIG.bgExtendInner;
+      const innerLine = svgEl('line', {
+        class: 'bg-line',
+        x1: ix1, y1: iy1, x2: ix2, y2: iy2,
+      });
+      bgLineLayer.appendChild(innerLine);
+      bgLines.push(innerLine);
+
+      // Outer ray: starts at disc origin, extends OUTWARD ONLY
+      // line.dir points inward, so negate for the outward direction
+      const rx2 = dp.x - line.dir.x * CONFIG.bgExtendOuter;
+      const ry2 = dp.y - line.dir.y * CONFIG.bgExtendOuter;
+      const ray = svgEl('line', {
+        class: 'bg-ray',
+        x1: dp.x, y1: dp.y, x2: rx2, y2: ry2,
+      });
+      bgRayLayer.appendChild(ray);
+      bgRays.push(ray);
+    });
+
+    bgLinesByDisc[disc.id] = bgLines;
+    bgRaysByDisc[disc.id]  = bgRays;
+  });
+
+  /* ----------------------------------------------------------
+     Build project icons and connecting lines
+  ---------------------------------------------------------- */
+
   DISCIPLINES.forEach(disc => {
     const dp  = discPos(disc);
     const pps = projPositions(disc);
@@ -178,16 +338,19 @@
       linesLayer.appendChild(line);
       lineEls.push(line);
 
-      // Outer wrapper: positioned at final destination, animated by JS
+      // Outer wrapper: sits at final position, animated by JS
       const wrapper = document.createElementNS(NS, 'g');
       wrapper.setAttribute('class', 'proj-wrapper');
       wrapper.setAttribute('transform', `translate(${pp.x}, ${pp.y})`);
       wrapper.style.opacity = '0';
       wrapper.style.pointerEvents = 'none';
 
-      // Inner group: handles animation scale (0 → 1), holds visual elements
+      // Inner group: handles animation scale (0 → 1)
       const inner = document.createElementNS(NS, 'g');
-      inner.setAttribute('class', 'proj-icon');
+
+      // Icon group: holds visual elements and hover events
+      const icon = document.createElementNS(NS, 'g');
+      icon.setAttribute('class', 'proj-icon');
 
       const circle = svgEl('circle', {
         cx: 0, cy: 0,
@@ -209,8 +372,16 @@
       });
       text.textContent = initials;
 
-      inner.appendChild(circle);
-      inner.appendChild(text);
+      icon.appendChild(circle);
+      icon.appendChild(text);
+
+      // Arc label — hidden by default, shown on hover
+      const arcLabel = makeArcLabel(pp.label, disc.labelArcTop, disc.labelR);
+      icon.addEventListener('mouseenter', () => { arcLabel.style.opacity = '1'; });
+      icon.addEventListener('mouseleave', () => { arcLabel.style.opacity = '0'; });
+
+      inner.appendChild(icon);
+      inner.appendChild(arcLabel);
       wrapper.appendChild(inner);
       iconsLayer.appendChild(wrapper);
 
@@ -235,22 +406,29 @@
     // Lines fade in halfway through the icon animation
     lineEls.forEach((line, i) => {
       setTimeout(
-        () => { line.style.opacity = '0.35'; },
+        () => { line.style.opacity = '0.8'; },
         i * CONFIG.animStagger + CONFIG.animDuration * 0.5
       );
     });
+
+    // Background geometry brightens
+    bgLinesByDisc[discId].forEach(l => l.classList.add('active'));
+    bgRaysByDisc[discId].forEach(l => l.classList.add('active'));
   }
 
   function hideDisc(discId) {
     const { dp, wrappers, lineEls } = discData[discId];
 
-    // Lines fade out immediately
     lineEls.forEach(line => { line.style.opacity = '0'; });
 
     wrappers.forEach((entry, i) => {
       entry.wrapper.style.pointerEvents = 'none';
-      animateIcon(entry, dp, false, i * CONFIG.animStagger);
+      animateIcon(entry, dp, false, (wrappers.length - 1 - i) * CONFIG.animStagger);
     });
+
+    // Background geometry dims
+    bgLinesByDisc[discId].forEach(l => l.classList.remove('active'));
+    bgRaysByDisc[discId].forEach(l => l.classList.remove('active'));
   }
 
   /* ----------------------------------------------------------

@@ -25,8 +25,22 @@
     xmlns="http://www.w3.org/2000/svg"
     aria-label="Interactive portfolio — select a discipline to explore projects"
   >
+    <!-- Arc label paths are injected here by main.js -->
+    <defs id="js-defs"></defs>
+
+    <!-- Layer 1: outward rays extending to window edges -->
+    <g id="js-bg-rays"></g>
+
+    <!-- Layer 2: inner background geometry (bounded star) -->
+    <g id="js-bg-lines"></g>
+
+    <!-- Layer 3: connecting lines from discipline to project icons -->
     <g id="js-lines"></g>
+
+    <!-- Layer 4: project icons and arc labels -->
     <g id="js-icons"></g>
+
+    <!-- Layer 5: discipline buttons (on top) -->
     <g id="js-disciplines"></g>
   </svg>
 
