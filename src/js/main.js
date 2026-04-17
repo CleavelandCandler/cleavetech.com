@@ -27,7 +27,10 @@
     arcSpread: 30,
 
     // Animation duration in ms
-    animDuration: 380,
+    animDurationOpen: 420,
+
+    // Animation duration in ms
+    animDurationClose: 320,
 
     // Delay between each icon animating in (stagger), in ms
     animStagger: 60,
@@ -233,7 +236,7 @@
    * - show=true:  slides out from disc center, scales up, fades in
    * - show=false: slides back to disc center, scales down, fades out
    */
-  function animateIcon(entry, discCenter, show, delay) {
+  function animateIcon(entry, discCenter, show, delay, duration) {
     const { wrapper, inner, tx, ty } = entry;
     const startTime = performance.now() + delay;
 
@@ -244,7 +247,7 @@
       }
 
       const elapsed  = now - startTime;
-      const raw      = Math.min(elapsed / CONFIG.animDuration, 1);
+      const raw      = Math.min(elapsed / duration, 1);
       const t        = show ? easeOutCubic(raw) : easeInCubic(raw);
       const progress = show ? t : 1 - t;
 
@@ -400,14 +403,14 @@
 
     wrappers.forEach((entry, i) => {
       entry.wrapper.style.pointerEvents = 'none';
-      animateIcon(entry, dp, true, i * CONFIG.animStagger);
+      animateIcon(entry, dp, true, i * CONFIG.animStagger, CONFIG.animDurationOpen);
     });
 
     // Lines fade in halfway through the icon animation
     lineEls.forEach((line, i) => {
       setTimeout(
         () => { line.style.opacity = '0.8'; },
-        i * CONFIG.animStagger + CONFIG.animDuration * 0.5
+        i * CONFIG.animStagger + CONFIG.animDurationOpen * 0.5
       );
     });
 
@@ -423,7 +426,7 @@
 
     wrappers.forEach((entry, i) => {
       entry.wrapper.style.pointerEvents = 'none';
-      animateIcon(entry, dp, false, (wrappers.length - 1 - i) * CONFIG.animStagger);
+      animateIcon(entry, dp, false, (wrappers.length - 1 - i) * CONFIG.animStagger, CONFIG.animDurationClose);
     });
 
     // Background geometry dims
