@@ -37,9 +37,6 @@
 
     // How far the inner background lines extend in both directions
     bgExtendInner: 320,
-
-    // How far the outer rays extend (past any viewport)
-    bgExtendOuter: 2000,
   };
 
   /* ----------------------------------------------------------
@@ -280,7 +277,6 @@
   let activeDisc = null;
   const discData      = {};
   const bgLinesByDisc = {};
-  const bgRaysByDisc  = {};
 
   /* ----------------------------------------------------------
      Build background geometry
@@ -290,35 +286,24 @@
     const dp    = discPos(disc);
     const lines = ALL_LINES[disc.id];
     const bgLines = [];
-    const bgRays  = [];
 
-    lines.forEach(line => {
-      // Inner line: extends in BOTH directions, forming the bounded star
-      const ix1 = dp.x - line.dir.x * CONFIG.bgExtendInner;
-      const iy1 = dp.y - line.dir.y * CONFIG.bgExtendInner;
-      const ix2 = dp.x + line.dir.x * CONFIG.bgExtendInner;
-      const iy2 = dp.y + line.dir.y * CONFIG.bgExtendInner;
-      const innerLine = svgEl('line', {
-        class: 'bg-line',
-        x1: ix1, y1: iy1, x2: ix2, y2: iy2,
-      });
-      bgLineLayer.appendChild(innerLine);
-      bgLines.push(innerLine);
-
-      // Outer ray: starts at disc origin, extends OUTWARD ONLY
-      // line.dir points inward, so negate for the outward direction
-      const rx2 = dp.x - line.dir.x * CONFIG.bgExtendOuter;
-      const ry2 = dp.y - line.dir.y * CONFIG.bgExtendOuter;
-      const ray = svgEl('line', {
-        class: 'bg-ray',
-        x1: dp.x, y1: dp.y, x2: rx2, y2: ry2,
-      });
-      bgRayLayer.appendChild(ray);
-      bgRays.push(ray);
+lines.forEach((line, lineIndex) => {
+  // Center line only (index 1) — the three crossing bisectors
+  if (lineIndex === 1) {
+    const ix1 = dp.x - line.dir.x * CONFIG.bgExtendInner;
+    const iy1 = dp.y - line.dir.y * CONFIG.bgExtendInner;
+    const ix2 = dp.x + line.dir.x * CONFIG.bgExtendInner;
+    const iy2 = dp.y + line.dir.y * CONFIG.bgExtendInner;
+    const innerLine = svgEl('line', {
+      class: 'bg-line',
+      x1: ix1, y1: iy1, x2: ix2, y2: iy2,
     });
+    bgLineLayer.appendChild(innerLine);
+    bgLines.push(innerLine);
+  }
+});
 
     bgLinesByDisc[disc.id] = bgLines;
-    bgRaysByDisc[disc.id]  = bgRays;
   });
 
   /* ----------------------------------------------------------
@@ -416,7 +401,6 @@
 
     // Background geometry brightens
     bgLinesByDisc[discId].forEach(l => l.classList.add('active'));
-    bgRaysByDisc[discId].forEach(l => l.classList.add('active'));
   }
 
   function hideDisc(discId) {
@@ -431,7 +415,6 @@
 
     // Background geometry dims
     bgLinesByDisc[discId].forEach(l => l.classList.remove('active'));
-    bgRaysByDisc[discId].forEach(l => l.classList.remove('active'));
   }
 
   /* ----------------------------------------------------------

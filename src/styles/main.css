@@ -61,7 +61,7 @@ body {
   align-items: center;
   gap: 0;
   margin-bottom: 0rem; /* gap between header and page content */
-  border: 3px solid var(--color-text);
+  border: 1px solid var(--color-border);
   border-radius: 15px;
   padding: 1.5rem 2rem; /* gap around inside of border */
   width: fit-content;
@@ -247,7 +247,7 @@ body {
 .arc-label {
   font-family: var(--font-primary);
   font-size: 7.5px;
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   fill: var(--color-accent);
