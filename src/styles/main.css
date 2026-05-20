@@ -102,36 +102,6 @@ body {
   overflow: visible;
 }
 
-/* --- Background Geometry --- */
-
-/*
-  Two sets of lines underlay the interactive elements:
-
-  .bg-line — inner geometry: extends in both directions from each
-             discipline button, forming the bounded star shape.
-             Terminates naturally at the triangle boundaries.
-
-  .bg-ray  — outer rays: extend only outward from each discipline
-             button to the window edges, one per project line direction.
-
-  Both sets respond to the active discipline at 40% opacity.
-  Default opacity is 20%.
-*/
-
-.bg-line,
-.bg-ray {
-  stroke: var(--color-text);
-  stroke-width: 0.4;
-  opacity: 0.2;
-  pointer-events: none;
-  transition: opacity var(--transition-slow);
-}
-
-.bg-line.active,
-.bg-ray.active {
-  opacity: 0.4;
-}
-
 /* --- Connecting Lines --- */
 
 .conn-line {
@@ -220,20 +190,18 @@ body {
   stroke-width: 1.5;
 }
 
-.proj-initials {
-  font-family: var(--font-primary);
-  font-size: 10px;
-  font-weight: var(--font-weight-medium);
-  letter-spacing: 0.05em;
-  fill: var(--color-text-muted);
-  text-anchor: middle;
-  dominant-baseline: middle;
+.proj-icon-glyph {
   pointer-events: none;
-  transition: fill var(--transition-fast);
 }
 
-.proj-icon:hover .proj-initials {
-  fill: var(--color-accent);
+.proj-icon-glyph * {
+  fill: none;
+  stroke: var(--color-text-muted);
+  transition: stroke var(--transition-fast);
+}
+
+.proj-icon:hover .proj-icon-glyph * {
+  stroke: var(--color-accent);
 }
 
 /* --- Arc Labels --- */

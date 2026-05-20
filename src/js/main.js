@@ -64,10 +64,33 @@
     },
   ];
 
+  const ICONS = {
+    hammer: `<path d="m15 12-9.373 9.373a1 1 0 0 1-3.001-3L12 9"/><path d="m18 15 4-4"/><path d="m21.5 11.5-1.914-1.914A2 2 0 0 1 19 8.172v-.344a2 2 0 0 0-.586-1.414l-1.657-1.657A6 6 0 0 0 12.516 3H9l1.243 1.243A6 6 0 0 1 12 8.485V10l2 2h1.172a2 2 0 0 1 1.414.586L18.5 14.5"/>`,
+    "life-buoy": `<circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/><circle cx="12" cy="12" r="4"/>`,
+    "flask-conical": `<path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2"/><path d="M6.453 15h11.094"/><path d="M8.5 2h7"/>`,
+    gem: `<path d="M10.5 3 8 9l4 13 4-13-2.5-6"/><path d="M17 3a2 2 0 0 1 1.6.8l3 4a2 2 0 0 1 .013 2.382l-7.99 10.986a2 2 0 0 1-3.247 0l-7.99-10.986A2 2 0 0 1 2.4 7.8l2.998-3.997A2 2 0 0 1 7 3z"/><path d="M2 9h20"/>`,
+    film: `<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M7 3v18"/><path d="M3 7.5h4"/><path d="M3 12h18"/><path d="M3 16.5h4"/><path d="M17 3v18"/><path d="M17 7.5h4"/><path d="M17 16.5h4"/>`,
+    projector: `<path d="M5 7 3 5"/><path d="M9 6V3"/><path d="m13 7 2-2"/><circle cx="9" cy="13" r="3"/><path d="M11.83 12H20a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2.17"/><path d="M16 16h2"/>`,
+    "boom-box": `<path d="M4 9V5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v4"/><path d="M8 8v1"/><path d="M12 8v1"/><path d="M16 8v1"/><rect width="20" height="12" x="2" y="9" rx="2"/><circle cx="8" cy="15" r="2"/><circle cx="16" cy="15" r="2"/>`,
+    piano: `<path d="M18.5 8c-1.4 0-2.6-.8-3.2-2A6.87 6.87 0 0 0 2 9v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-8.5C22 9.6 20.4 8 18.5 8"/><path d="M2 14h20"/><path d="M6 14v4"/><path d="M10 14v4"/><path d="M14 14v4"/><path d="M18 14v4"/>`,
+    turntable: `<path d="M10 12.01h.01"/><path d="M18 8v4a8 8 0 0 1-1.07 4"/><circle cx="10" cy="12" r="4"/><rect x="2" y="4" width="20" height="16" rx="2"/>`,
+  };
   const PROJECTS = {
-    technology: ['Makerspace',    'IT Support',    'Homelab'       ],
-    design:     ['Project Geode', 'Motion Design', 'Projection Art'],
-    music:      ['Radio',         'Production',    'Disk Jockey'   ],
+    technology: [
+      { label: 'Homelab',    icon: 'flask-conical' },
+      { label: 'IT Support', icon: 'life-buoy' },
+      { label: 'Makerspace', icon: 'hammer' },
+    ],
+    design: [
+      { label: 'Projection Art', icon: 'projector' },
+      { label: 'Motion Design', icon: 'film' },
+      { label: 'Project Geode', icon: 'gem' },
+    ],
+    music: [
+      { label: 'Disk Jockey', icon: 'turntable' },
+      { label: 'Production', icon: 'piano' },
+      { label: 'Radio',      icon: 'boom-box' },
+    ],
   };
 
   /* ----------------------------------------------------------
@@ -129,7 +152,7 @@
     const otherDiscs = DISCIPLINES.filter(d => d.id !== disc.id);
     const myLines = ALL_LINES[disc.id];
 
-    return PROJECTS[disc.id].map((label, i) => {
+    return PROJECTS[disc.id].map(({ label, icon }, i) => {
       let pos;
 
       if (i === 1) {
@@ -166,7 +189,7 @@
         pos = best;
       }
 
-      return { label, x: pos.x, y: pos.y };
+      return { label, icon, x: pos.x, y: pos.y };
     });
   }
 
@@ -312,22 +335,20 @@
         class: 'proj-circle',
       });
 
-      // Placeholder initials — replace with <image> tags once logos are ready
-      const initials = pp.label
-        .split(' ')
-        .map(w => w[0])
-        .join('')
-        .slice(0, 2)
-        .toUpperCase();
-
-      const text = svgEl('text', {
-        x: 0, y: 0,
-        class: 'proj-initials',
+      const iconGroup = svgEl('g', {
+        class: 'proj-icon-glyph',
+        transform: 'translate(-12, -12)',
       });
-      text.textContent = initials;
+      if (pp.icon && ICONS[pp.icon]) {
+        const tmp = document.createElementNS(NS, 'svg');
+        tmp.innerHTML = ICONS[pp.icon];
+        while (tmp.firstChild) {
+          iconGroup.appendChild(tmp.firstChild);
+        }
+      }
 
       icon.appendChild(circle);
-      icon.appendChild(text);
+      icon.appendChild(iconGroup);
 
       // Arc label — hidden by default, shown on hover
       const arcLabel = makeArcLabel(pp.label, disc.labelArcTop, disc.labelR);
