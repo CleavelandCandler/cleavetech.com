@@ -34,9 +34,6 @@
 
     // Delay between each icon animating in (stagger), in ms
     animStagger: 60,
-
-    // How far the inner background lines extend in both directions
-    bgExtendInner: 320,
   };
 
   /* ----------------------------------------------------------
@@ -268,43 +265,12 @@
      Layer references
   ---------------------------------------------------------- */
 
-  const bgRayLayer = document.getElementById('js-bg-rays');
-  const bgLineLayer = document.getElementById('js-bg-lines');
   const linesLayer  = document.getElementById('js-lines');
   const iconsLayer  = document.getElementById('js-icons');
   const discLayer   = document.getElementById('js-disciplines');
 
   let activeDisc = null;
   const discData      = {};
-  const bgLinesByDisc = {};
-
-  /* ----------------------------------------------------------
-     Build background geometry
-  ---------------------------------------------------------- */
-
-  DISCIPLINES.forEach(disc => {
-    const dp    = discPos(disc);
-    const lines = ALL_LINES[disc.id];
-    const bgLines = [];
-
-lines.forEach((line, lineIndex) => {
-  // Center line only (index 1) — the three crossing bisectors
-  if (lineIndex === 1) {
-    const ix1 = dp.x - line.dir.x * CONFIG.bgExtendInner;
-    const iy1 = dp.y - line.dir.y * CONFIG.bgExtendInner;
-    const ix2 = dp.x + line.dir.x * CONFIG.bgExtendInner;
-    const iy2 = dp.y + line.dir.y * CONFIG.bgExtendInner;
-    const innerLine = svgEl('line', {
-      class: 'bg-line',
-      x1: ix1, y1: iy1, x2: ix2, y2: iy2,
-    });
-    bgLineLayer.appendChild(innerLine);
-    bgLines.push(innerLine);
-  }
-});
-
-    bgLinesByDisc[disc.id] = bgLines;
-  });
 
   /* ----------------------------------------------------------
      Build project icons and connecting lines
@@ -398,9 +364,6 @@ lines.forEach((line, lineIndex) => {
         i * CONFIG.animStagger + CONFIG.animDurationOpen * 0.5
       );
     });
-
-    // Background geometry brightens
-    bgLinesByDisc[discId].forEach(l => l.classList.add('active'));
   }
 
   function hideDisc(discId) {
@@ -412,9 +375,6 @@ lines.forEach((line, lineIndex) => {
       entry.wrapper.style.pointerEvents = 'none';
       animateIcon(entry, dp, false, (wrappers.length - 1 - i) * CONFIG.animStagger, CONFIG.animDurationClose);
     });
-
-    // Background geometry dims
-    bgLinesByDisc[discId].forEach(l => l.classList.remove('active'));
   }
 
   /* ----------------------------------------------------------
