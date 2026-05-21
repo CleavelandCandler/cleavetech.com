@@ -9,4 +9,5 @@ fetch(prefix + "src/partials/header.html")
   .then((res) => res.text())
   .then((html) => {
     document.getElementById("site-header").outerHTML = html;
+    document.body.classList.add("ready");
   });

@@ -1,78 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <script src="/src/js/header.js" defer></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>About — CleaveTech</title>
     <link rel="stylesheet" href="../src/styles/tokens.css" />
     <link rel="stylesheet" href="../src/styles/main.css" />
-    <link rel="stylesheet" href="../src/styles/about.css" />
+    <link rel="stylesheet" href="../src/styles/content.css" />
+    <script src="../src/js/header.js" defer></script>
   </head>
   <body>
 
     <div id="site-header"></div>
 
-    <main class="about">
+    <main class="content">
 
-      <!-- Hero: photo + identity -->
-      <section class="about__hero">
-        <img
-          class="about__photo"
-          src="../src/assets/img/cleaveland_profile.jpg"
-          alt="Cleaveland Candler"
-        />
-        <div class="about__identity">
-          <p class="about__disciplines">Technologist · Musician · Designer</p>
-          <p class="about__hook">
-            [HOOK GOES HERE]
-          </p>
-        </div>
-      </section>
+  <section class="content__hero">
+    <img
+      class="content__photo content__photo--round"
+      src="../src/assets/img/cleaveland_profile.jpg"
+      alt="Cleaveland Candler"
+    />
+    <div class="content__body">
 
-      <!-- Throughline: the connective narrative -->
-      <section class="about__throughline">
-        <p>
-          [Throughline paragraph — 3 to 5 sentences explaining how the
-          three disciplines connect in your life and work.]
+      <div>
+        <h2 class="content__section-title">Technologist</h2>
+        <p class="content__section-body">
+          This is at the center of everything I do. Even my projects sorted
+          under other disciplines are built on the foundation of technology.
+          In addition to enabling my projects, it also lets me build bridges
+          between them. My makerspace work allows me to build enclosures for
+          the light fixtures that accentuate my musical performances, as one
+          example. What would otherwise be separate disciplines become one
+          connected body of work.
         </p>
-      </section>
+      </div>
 
-      <!-- Three discipline blocks -->
-      <section class="about__disciplines-grid">
+      <div>
+        <h2 class="content__section-title">Designer</h2>
+        <p class="content__section-body">
+          If technology is the foundation of my work, design is the lens. It
+          shapes how I see the world and how I want my work to be seen. Good
+          design can be anywhere, improve anything — it's a consideration when
+          I build a website, assemble a DJ set, and draft an email.
+        </p>
+      </div>
 
-        <div class="about__discipline">
-          <h2 class="about__discipline-title">Technology</h2>
-          <p class="about__discipline-body">
-            [A paragraph about your work in technology — IT, homelab,
-            systems, higher ed, what drives you in this space.]
-          </p>
-        </div>
+      <div>
+        <h2 class="content__section-title">Musician</h2>
+        <p class="content__section-body">
+          This one's mainly for me. Since I stopped DJing full time in 2020,
+          music hasn't been much of a consideration with regard to my career
+          path. Even so, it's important enough to me on a personal level that
+          it warrants a spot here, especially considering how often it's
+          involved in my other projects.
+        </p>
+      </div>
 
-        <div class="about__discipline">
-          <h2 class="about__discipline-title">Design</h2>
-          <p class="about__discipline-body">
-            [A paragraph about your design work — what you make,
-            your sensibility, tools, influences.]
-          </p>
-        </div>
+    </div>
+  </section>
 
-        <div class="about__discipline">
-          <h2 class="about__discipline-title">Music</h2>
-          <p class="about__discipline-body">
-            [A paragraph about your music — what you do, what role
-            it plays, how it connects to the rest.]
-          </p>
-        </div>
-
-      </section>
-
-      <!-- Footer strip -->
-      <footer class="about__footer">
-        <p class="about__footer-line">Technologist · Designer · Musician</p>
-      </footer>
-
-    </main>
+</main>
 
   </body>
 </html>

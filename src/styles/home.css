@@ -1,0 +1,158 @@
+/* ============================================================
+   home.css — Homepage-specific styles for cleavetech.com
+   Depends on tokens.css and main.css being loaded first.
+   ============================================================ */
+
+/* --- Homepage overflow lock --- */
+
+body {
+  overflow: hidden;
+}
+
+/* --- Landing Page Layout --- */
+
+.landing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100svh;
+  padding: 2rem 1rem 3rem;
+}
+
+/* --- Page Title --- */
+
+.landing__page-title {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* --- SVG Canvas --- */
+
+.portfolio-svg {
+  width: 100%;
+  max-width: min(1280px, calc((100svh - 120px) * 640 / 480));
+  height: auto;
+  overflow: visible;
+  transform: translateY(-2rem);
+}
+
+/* --- Connecting Lines --- */
+
+.conn-line {
+  stroke: var(--color-border);
+  stroke-width: 1.5;
+  opacity: 0;
+  transition: opacity var(--transition-slow), stroke var(--transition-base);
+}
+
+.conn-line.hovered {
+  stroke: var(--color-accent);
+}
+
+/* --- Discipline Buttons --- */
+
+.disc-btn {
+  cursor: pointer;
+}
+
+.disc-circle {
+  fill: var(--color-bg);
+  stroke: var(--color-text);
+  stroke-width: 1.5;
+  transition:
+    fill var(--transition-base),
+    stroke var(--transition-base),
+    stroke-width var(--transition-base);
+}
+
+.disc-btn:hover .disc-circle {
+  stroke: var(--color-accent);
+  stroke-width: 2;
+}
+
+.disc-btn.active .disc-circle {
+  fill: var(--color-accent);
+  stroke: var(--color-accent);
+}
+
+.disc-label {
+  font-family: var(--font-primary);
+  font-size: 9.5px;
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  fill: var(--color-text);
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  transition: fill var(--transition-base);
+}
+
+.disc-btn:hover:not(.active) .disc-label {
+  fill: var(--color-accent);
+}
+
+.disc-btn.active .disc-label {
+  fill: var(--color-bg);
+}
+
+/* --- Project Icon Wrappers --- */
+
+.proj-wrapper {
+  /* Positioned and animated by main.js */
+}
+
+.proj-icon {
+  cursor: pointer;
+}
+
+.proj-circle {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  stroke-width: 1;
+  transition:
+    fill var(--transition-fast),
+    stroke var(--transition-fast),
+    stroke-width var(--transition-fast);
+}
+
+.proj-icon:hover .proj-circle {
+  fill: var(--color-bg);
+  stroke: var(--color-accent);
+  stroke-width: 1.5;
+}
+
+.proj-icon-glyph {
+  pointer-events: none;
+}
+
+.proj-icon-glyph * {
+  fill: none;
+  stroke: var(--color-text-muted);
+  transition: stroke var(--transition-fast);
+}
+
+.proj-icon:hover .proj-icon-glyph * {
+  stroke: var(--color-accent);
+}
+
+/* --- Arc Labels --- */
+
+.arc-label {
+  font-family: var(--font-primary);
+  font-size: 7.5px;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  fill: var(--color-accent);
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+}

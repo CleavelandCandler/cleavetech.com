@@ -1,11 +1,12 @@
 /* ============================================================
-   about.css — Layout styles for the About page
+   content.css — Shared styles for content pages
+   (About, Projects, etc.)
    Depends on tokens.css and main.css being loaded first.
    ============================================================ */
 
 /* --- Page Wrapper --- */
 
-.about {
+.content {
   max-width: 860px;
   margin-inline: auto;
   padding: 4rem 2rem 6rem;
@@ -16,89 +17,76 @@
 
 /* --- Hero --- */
 
-.about__hero {
+.content__hero {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 3rem;
+  gap: 2rem;
 }
 
-.about__photo {
+.content__photo {
   width: 180px;
   height: 180px;
-  border-radius: 50%;
   object-fit: cover;
   flex-shrink: 0;
   border: 1px solid var(--color-border);
 }
 
-.about__disciplines {
+/* About-specific: circular crop */
+.content__photo--round {
+  border-radius: 50%;
+}
+
+.content__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* --- Disciplines Line --- */
+
+.content__disciplines {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-wide);
   color: var(--color-accent);
   text-transform: uppercase;
-  margin-bottom: 1rem;
 }
 
-.about__hook {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-light);
-  color: var(--color-text);
-  line-height: 1.7;
-}
+/* --- Section Titles --- */
 
-/* --- Throughline --- */
-
-.about__throughline p {
-  font-size: var(--font-size-md);
-  font-weight: var(--font-weight-light);
-  color: var(--color-text);
-  line-height: 1.8;
-  max-width: 65ch;
-}
-
-/* --- Discipline Grid --- */
-
-.about__disciplines-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
-}
-
-.about__discipline-title {
+.content__section-title {
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   color: var(--color-accent);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
 }
 
-.about__discipline-body {
-  font-size: var(--font-size-base);
+/* --- Body Text --- */
+
+.content__section-body {
+  font-size: var(--font-size-md);
   font-weight: var(--font-weight-light);
   color: var(--color-text);
   line-height: 1.8;
+  margin-bottom: 1.25rem;
 }
 
 /* --- Footer Strip --- */
 
-.about__footer {
+.content__footer {
   border-top: 1px solid var(--color-border);
   padding-top: 2rem;
   text-align: center;
 }
 
-.about__footer-line {
+.content__footer-line {
   font-size: var(--font-size-sm);
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-wider);
   text-transform: uppercase;
   color: var(--color-text-muted);
-}
-
-/* --- Override homepage overflow lock --- */
-
-body {
-  overflow: auto;
 }
