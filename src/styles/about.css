@@ -1,0 +1,104 @@
+/* ============================================================
+   about.css — Layout styles for the About page
+   Depends on tokens.css and main.css being loaded first.
+   ============================================================ */
+
+/* --- Page Wrapper --- */
+
+.about {
+  max-width: 860px;
+  margin-inline: auto;
+  padding: 4rem 2rem 6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+/* --- Hero --- */
+
+.about__hero {
+  display: flex;
+  align-items: center;
+  gap: 3rem;
+}
+
+.about__photo {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border);
+}
+
+.about__disciplines {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-accent);
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.about__hook {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+  line-height: 1.7;
+}
+
+/* --- Throughline --- */
+
+.about__throughline p {
+  font-size: var(--font-size-md);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+  line-height: 1.8;
+  max-width: 65ch;
+}
+
+/* --- Discipline Grid --- */
+
+.about__disciplines-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.5rem;
+}
+
+.about__discipline-title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+
+.about__discipline-body {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-light);
+  color: var(--color-text);
+  line-height: 1.8;
+}
+
+/* --- Footer Strip --- */
+
+.about__footer {
+  border-top: 1px solid var(--color-border);
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.about__footer-line {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  letter-spacing: var(--letter-spacing-wider);
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* --- Override homepage overflow lock --- */
+
+body {
+  overflow: auto;
+}
