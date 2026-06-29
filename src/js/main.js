@@ -77,19 +77,19 @@
   };
   const PROJECTS = {
     technology: [
-      { label: 'Homelab',    icon: 'flask-conical' },
-      { label: 'IT Support', icon: 'life-buoy' },
-      { label: 'Makerspace', icon: 'hammer' },
+      { label: 'Homelab',    icon: 'flask-conical', url: '/projects/homelab' },
+      { label: 'IT Support', icon: 'life-buoy', url: '/projects/it-support' },
+      { label: 'Makerspace', icon: 'hammer', url: '/projects/makerspace' },
     ],
     design: [
-      { label: 'Projection Art', icon: 'projector' },
-      { label: 'Motion Design', icon: 'film' },
-      { label: 'Lighting Design', icon: 'spotlight' },
+      { label: 'Projection Art', icon: 'projector', url: '/projects/projection-art' },
+      { label: 'Motion Design', icon: 'film', url: '/projects/motion-design' },
+      { label: 'Lighting Design', icon: 'spotlight', url: '/projects/lighting-design' },
     ],
     music: [
-      { label: 'Disk Jockey', icon: 'turntable' },
-      { label: 'Production', icon: 'piano' },
-      { label: 'Radio',      icon: 'boom-box' },
+      { label: 'Disk Jockey', icon: 'turntable', url: '/projects/disk-jockey' },
+      { label: 'Production', icon: 'piano', url: '/projects/production' },
+      { label: 'Radio',      icon: 'boom-box', url: '/projects/radio' },
     ],
   };
 
@@ -152,7 +152,7 @@
     const otherDiscs = DISCIPLINES.filter(d => d.id !== disc.id);
     const myLines = ALL_LINES[disc.id];
 
-    return PROJECTS[disc.id].map(({ label, icon }, i) => {
+    return PROJECTS[disc.id].map(({ label, icon, url }, i) => {
       let pos;
 
       if (i === 1) {
@@ -189,7 +189,7 @@
         pos = best;
       }
 
-      return { label, icon, x: pos.x, y: pos.y };
+      return { label, icon, url, x: pos.x, y: pos.y };
     });
   }
 
@@ -362,6 +362,9 @@
         arcLabel.style.opacity = '0';
         thisLine.classList.remove('hovered');
       });
+      icon.addEventListener('click', () => {
+        window.location.href = pp.url;
+      });
 
       inner.appendChild(icon);
       inner.appendChild(arcLabel);
@@ -454,5 +457,3 @@
   });
 
 })();
-
-document.body.classList.add('ready');
