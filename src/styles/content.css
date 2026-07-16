@@ -24,6 +24,14 @@
   gap: 2rem;
 }
 
+.content__hero-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: -2rem;
+}
+
 .content__photo {
   width: 180px;
   height: 180px;
@@ -108,6 +116,13 @@
   object-position: center 80%;
 }
 
+.content__banner-img--radio {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 80%;
+}
+
 .content__title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
@@ -182,7 +197,7 @@
 
 .collapsible__panel.open {
   max-height: 2000px;
-  padding: 0 1.25rem 1.25rem;
+  padding: 0 1.25rem;
 }
 
 .collapsible__body {
@@ -215,4 +230,21 @@
   flex-direction: column;
   gap: 0.25rem;
   list-style-type: disc;
+}
+
+.content__embed-wrap {
+  width: 100%;
+  max-width: 1000px;
+  margin-inline: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: -2rem;
+  margin-bottom: -2rem;
+}
+
+.content__embed {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border: 0;
 }

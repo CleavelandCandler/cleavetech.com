@@ -28,6 +28,16 @@ body.ready {
   opacity: 1;
 }
 
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: opacity var(--transition-fast);
+}
+
+a:hover {
+  opacity: 0.75;
+}
+
 /* --- Site Header --- */
 
 .landing__header {
