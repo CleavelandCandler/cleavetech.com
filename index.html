@@ -1,38 +1,60 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
-    <script src="src/js/header.js" defer></script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CleaveTech</title>
+
+    <title>CleaveTech - Cleaveland Candler</title>
+    <meta
+      name="description"
+      content="The portfolio of Cleaveland Candler — technologist, designer, and musician. Nine projects spanning IT, design, and music."
+    />
+
+    <link rel="icon" href="favicon.ico" sizes="32x32" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+
+    <meta name="theme-color" content="#037585" />
+
+    <meta property="og:title" content="CleaveTech - Cleaveland Candler" />
+    <meta
+      property="og:description"
+      content="The portfolio of Cleaveland Candler — technologist, designer, and musician."
+    />
+    <meta property="og:url" content="https://cleavetech.com/" />
+    <meta property="og:type" content="website" />
+
+    <link rel="canonical" href="https://cleavetech.com/" />
+
     <link rel="stylesheet" href="src/styles/tokens.css" />
     <link rel="stylesheet" href="src/styles/main.css" />
     <link rel="stylesheet" href="src/styles/home.css" />
+
+    <script src="src/js/header.js" defer></script>
   </head>
   <body>
+    <div id="site-header"></div>
 
-<div id="site-header"></div>
+    <main class="landing">
+      <svg
+        class="portfolio-svg"
+        viewBox="0 0 640 480"
+        xmlns="http://www.w3.org/2000/svg"
+        aria-label="Interactive portfolio — select a discipline to explore projects"
+      >
+        <!-- Arc label paths are injected here by main.js -->
+        <defs id="js-defs"></defs>
 
-<main class="landing">
-  <svg
-    class="portfolio-svg"
-    viewBox="0 0 640 480"
-    xmlns="http://www.w3.org/2000/svg"
-    aria-label="Interactive portfolio — select a discipline to explore projects"
-  >
-    <!-- Arc label paths are injected here by main.js -->
-    <defs id="js-defs"></defs>
+        <!-- Layer 3: connecting lines from discipline to project icons -->
+        <g id="js-lines"></g>
 
-    <!-- Layer 3: connecting lines from discipline to project icons -->
-    <g id="js-lines"></g>
+        <!-- Layer 4: project icons and arc labels -->
+        <g id="js-icons"></g>
 
-    <!-- Layer 4: project icons and arc labels -->
-    <g id="js-icons"></g>
-
-    <!-- Layer 5: discipline buttons (on top) -->
-    <g id="js-disciplines"></g>
-  </svg>
-</main>
+        <!-- Layer 5: discipline buttons (on top) -->
+        <g id="js-disciplines"></g>
+      </svg>
+    </main>
     <p class="landing__page-title">Portfolio Map</p>
 
     <script src="src/js/main.js"></script>

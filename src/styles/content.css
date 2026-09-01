@@ -248,3 +248,24 @@
   aspect-ratio: 1 / 1;
   border: 0;
 }
+
+/* --- Inline Figures --- */
+
+.content__figure {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.content__figure-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.content__figure-caption {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+}
