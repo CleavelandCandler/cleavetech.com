@@ -35,4 +35,70 @@
   <body>
     <div id="site-header"></div>
   </body>
+  <body>
+    <div id="site-header"></div>
+
+    <main class="content">
+      <div class="content__banner">
+        <img class="content__banner-img" src="../../src/assets/img/homelab-banner.jpg" alt="Homelab"/>
+      </div>
+      <h1 class="content__title">Homelab - Self-hosted IT Infrastructure</h1>
+      <section class="content__intro">
+        <p class="content__intro-body">
+          HOMELAB INTRO PARAGRAPH 1 GOES HERE
+        </p>
+        <p class="content__intro-body">
+          HOMELAB INTRO PARAGRAPH 2 GOES HERE
+        </p>
+      </section>
+
+      <section class="content__body">
+        <div class="collapsible">
+          <button class="collapsible__trigger">ThinkPad W530 - "CleaveBuntu"</button>
+          <div class="collapsible__panel">
+            <p class="collapsible__body">
+              My old high school laptop - formerly on Windows 7, now running Ubuntu. Acts as the central "brain" of the lab and a way to practice my Linux fluency.
+              I swapped the old spinning disk for an SSD and dropped in some extra RAM (upgrading a Lenovo feels like snapping Legos together).
+              It also has a built-in SD card slot, making it an ideal station for imaging new Raspberry PI experiments. 
+            </p>
+          </div>
+        </div>
+
+        <div class="collapsible">
+          <button class="collapsible__trigger">Network-Attached Storage - "CleaveNAS"</button>
+          <div class="collapsible__panel">
+            <p class="collapsible__body">
+              A custom-upgraded HP Z240 rescued from tech-trash recycling, running TrueNAS OS. 
+              Features 2x 2TB spinning drives, mirrored for redundancy. Not a ton of space, but storage is expensive these days. It's still enough to hold my music library!
+            </p>
+          </div>
+        </div>
+
+        <div class="collapsible">
+          <button class="collapsible__trigger">Late 2013 Mac Pro - "CleaveCan"</button>
+          <div class="collapsible__panel">
+            <p class="collapsible__body">
+              The infamous "Trash Can" served as my main college computer and beyond. It still chugs along on MacOS 12 - the plan is to convert this into a Jellyfin server. 
+            </p>
+          </div>
+        </div>
+
+        <div class="collapsible">
+          <button class="collapsible__trigger">Raspberry Pi fleet - "CleavePi"</button>
+          <div class="collapsible__panel">
+            <p class="collapsible__body">
+              Four different models of Raspberry Pi means a varied set of platforms for all sorts of experiments.
+            </p>
+            <ol class="collapsible__list">
+              <li>CleavePi Alpha - Raspberry Pi 5, currently running Home Assistant</li>
+              <li>CleavePi Bravo - Raspberry Pi 4, PoE-capable - currently running Pi-hole DNS. Planned project: Tailscale subnet router.</li>
+              <li>CleavePi Charlie - Raspberry Pi Zero W - WiFi-capable - currently running Kiwix Serve as an off-grid Wikipedia server</li>
+              <li>CleavePi Delta - Raspberry Pi Zero - planned project: houseplant soil sensor station</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="../../src/js/collapsible.js"></script>
+  </body>
 </html>
